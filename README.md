@@ -7,7 +7,7 @@ Installation of the release is done by copying the contents of the Release folde
 The Source Code can be copied inside a folder for the project as PureBASIC can open source code from everywhere if you give it read/write access correctly.
 
 # Version/Release notes
-This is an old product. There will be NO official updated.
+This is an old product. There will be NO official updates.
 
 # Licence
 By downloading "2DPluginKIT-For-DarkBASIC-Pro" you agree the following licence terms :
