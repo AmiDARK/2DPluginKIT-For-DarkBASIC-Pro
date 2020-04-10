@@ -1,0 +1,68 @@
+; **** Dark BASIC Professional Project File ****
+; **** Written by Synergy Editor ****
+version=DBP1.00
+project name=2D Tiles Demonstration 1.0
+
+; **** source file information ****
+main=2D Layers VS Bobs Demo.dba
+LineMain=15
+
+; **** Executable Information  ***
+; build types: exe, media, installer, alone
+executable=2DCollisionsDEMO.exe
+build type=exe
+; ** Media file compression **
+compression=NO
+
+; ** Media file encryption **
+encryption=NO
+; ** Display the card options screen window? **
+card options window=NO
+
+; **** debugger information ****
+; If the editor sets this to yes, it is running in debug mode
+CLI=NO
+CommandLineArguments=
+
+; **** display mode information ****
+app title=DarkBASIC Professional Project
+
+; graphics mode options: fullscreen, window, desktop, fulldesktop, hidden
+graphics mode=window
+fullscreen resolution=640x480x32
+
+; arbitrary sizes are valid for windowed mode
+window resolution=640x480
+
+; **** External Files Information ****
+
+; **** Media ****
+; Example entries: media1=graphics\*.jpg
+media root path=X:\Odyssey-Creators\Produits - PC - TheGameCreators\DarkBASIC Professional PlugIN - 2DPluginKIT\2DPlugKIT [User Ver1.1b]\Projects\2DPluginKIT\Samples\3 - Layers & Bobs Collision\
+
+; **** Icons ****
+
+; **** Cursors ****
+
+; **** Version Info ****
+VerComments=
+VerCompany=
+VerFileDesc=
+VerFileNumber=
+VerInternal=
+VerCopyright=
+VerTrademark=
+VerFilename=
+VerProduct=
+VerProductNumber=v1.0
+
+; **** To Do ****
+
+; **** Comments ****
+comments1=
+
+; **** Advanced (setup.ini) configuration ****
+RemoveSafetyCode=NO
+SafeArrays=YES
+LocalTempFolder=NO
+ExternaliseDLLS=NO

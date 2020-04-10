@@ -1,0 +1,56 @@
+` ***************************************************************************************************
+Function LoadMap( File$ )
+  If File Exist( File$ ) = 1
+    ` Firstly, we must tell the plugin where the tiles are located to be sure it will
+    ` load them correctly.
+    Set Tiles Directory Setup.DefaultPATH + "\Tiles\"
+    ` Secondly, we will open the map file to get data from it.
+    Open To Read 1 , File$
+      Read String 1 , _HEADER$
+      If _HEADER$ = "[2DGameMakerMAP]"
+        Read Byte 1 , Map_Version : Read Byte 1 , Map_Revision
+        Read String 1 , _HEADER$
+        If _HEADER$ = "[MapDefinition]"
+          Read Long 1, Map_LayersCount
+          Read Long 1, Map_CurrentLayer
+          Read Long 1, Map_XPos
+          Read Long 1, Map_YPos
+          Read Long 1, Map_TilesCount
+          Read Long 1, Map_CurrentTile
+          ` Now, we'll read all tiles definition and create them.
+          Set Tiles Directory "Tiles"
+          If Map_TilesCount > 0
+            Read String 1, _HEADER$
+            If _HEADER$ = "[TilesDefinition]"
+              Repeat
+                TileID = Create Tile From File( 1 )
+               Until TileID = 0
+             Endif
+           Endif
+         ` LECTURE DES DONNEES RELATIVES AUX DIFFERENTS LAYERS DE LA MAP.
+          If Map_LayersCount > 0
+            Read String 1, _HEADER$
+            If _HEADER$ = "[LayersDefinition]"
+              ` CHARGEMENT DU LAYER ET DEFINITION DE SON CONTENU
+              Repeat
+                LayerID = Create Layer From File( 1 )
+               Until LayerID = 0
+             Endif
+           Endif
+         Endif
+       Endif
+     Close File 1
+    _LOADED = 1     
+   Else
+    _LOADED = 0
+   Endif
+ EndFunction _LOADED
+` ***************************************************************************************************
+Function COMPILERINCLUDES()
+  Null = Bitmap Exist( 1 ) : Null = BMP Delete Bitmap( 1 )
+  Null = EXT Initialized()
+  Null = Image Exist( 1 ) : Null = IMG Delete Image( 1 )
+  Null = Sprite Exist( 1 ) : Null = SPR Delete Sprite( 1 )
+  Null = B2D Initialized()
+ EndFunction
+ 

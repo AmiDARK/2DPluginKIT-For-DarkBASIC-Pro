@@ -1,0 +1,146 @@
+`
+` 2DPlugin KIT Ver 1.1 [2008.03.26]
+`===================================================================
+`Tiles Demonstration © Odyssey-Creators 2006-2008 [Frédéric Cordier]
+`===================================================================
+` 2D Tiles Demo
+`
+` This small sample will show you how to create tiles and use them in a layer.
+` It also demonstrate the use of animations and collisions
+` This demonstration uses mode 1 for animated sprites.
+`-----------------------------------------------------------------------------------------------------
+Set Display Mode 640, 480, 32
+Sync On : Sync Rate 60
+
+` 1. We must initialize the plugin.
+Null = Start 2DPlugKIT( "fortkraozuwayzaporrazpwz", "GTXbLRHScabHhbDPPVYIfUacG", 1 )
+` 2. We must reserve the correct amount of tiles.
+Reserve Tiles 64, 32, 32
+
+` 3. We load the two tiles we need for the demonstration
+` Note that the collision mask used is in the file : Overdose3_001[Mask].png
+` If a file with the same name than image but containing [Mask] before the extension
+` is found, it will automatically be loaded by 2DPluginKIT to define the tile mask.
+Set Tiles Directory "media\"
+Load Tile "Overdose3_001.png", 1
+Load Tile "Overdose3_033.png", 2
+Load Tile Mask "Overdose3_001[mask].png", 1
+
+` 4. Finallize the tiles creation
+Prepare Tiles
+
+` 5. We create the layer.
+Restore LAYER_INFORMATIONS
+Read LayerWIDTH : Read LayerHEIGHT
+Create Layer 1, LayerWIDTH, LayerHEIGHT
+Set Layer Tiles Sizes 1, 32, 32 
+For YLoop = 0 to LayerHEIGHT -1
+  For XLoop = 0 to LayerWIDTH - 1
+    Read LayerTILE
+    Set Layer Tile 1, XLoop, YLoop, LayerTILE
+   Next XLoop
+ Next YLoop
+
+` 6. We create the player.
+PlayerID = Load Bob( "Media/Character.png", 4, 4, 1 )
+Attach Bob To Layer PlayerID, 1
+Position Bob 1, 128, 128
+Create DBAL 1, "ANIM;1;2;3;4;" ` Up
+Set DBAl Speed 1, 10
+Create DBAL 2, "ANIM;5;6;7;8;"  ` Right
+Set DBAl Speed 2, 10
+Create DBAL 3, "ANIM:9;10;11;12;" ` Down
+Set DBAl Speed 3, 10
+Create DBAL 4, "ANIM;13;14;15;16;" ` Left
+Set DBAl Speed 4, 10
+
+` 7. We'll display the layer on screen and move the player
+AMOUNT = 1 ` Setup amount of random tiles displayed to 1 for default startup.
+Do
+  XPos = Get Bob Position X( PlayerID )
+  YPos = Get Bob Position Y( PlayerID )
+  ` 7.1. We read 4 mask pixels to know if the 4 corners allow moves.
+  TopLEFT = Get Layer MASKPixel( 1, XPos, YPos  )
+  TopRIGHT = Get Layer MASKPixel( 1, XPos + 24, YPos )  
+  BottomLEFT = Get Layer MASKPixel( 1, XPos, YPos + 32 )
+  BottomRIGHT = Get Layer MASKPixel( 1, XPos + 24, YPos + 32 )  
+  ` 7.2. We check movement to know where the user want to go.
+  XMove = RightKEY() - LeftKEY()
+  YMove = DownKEY() - UpKEY()
+  ` 7.3. We move the player to the desired location if available
+  Select XMove
+    Case -1
+      If BottomLEFT = 0 Or TopLEFT = 0 Then XPos = XPos - 1
+      If CurrentANIM <> 4
+        If CurrentANIM > 0 Then Stop DBal CurrentANIM 
+        Set DBAl To Bob 4, PlayerID
+        Play DBal 4 : Set DBal Loop 4, 1
+        CurrentANIM = 4
+       Endif
+     EndCase
+    Case 1
+      If BottomRIGHT = 0 Or TopRIGHT = 0 Then XPos = XPos + 1
+      If CurrentANIM <> 2
+        If CurrentANIM > 0 Then Stop DBal CurrentANIM 
+        Set DBAl To Bob 2, PlayerID
+        Play DBal 2 : Set DBal Loop 2, 1
+        CurrentANIM = 2
+       Endif
+     EndCase
+   EndSelect
+  Select YMove
+    Case -1
+      If TopRIGHT = 0 Or TopLEFT = 0 Then YPos = YPos - 1
+      If CurrentANIM <> 1
+        If CurrentANIM > 0 Then Stop DBal CurrentANIM 
+        Set DBAl To Bob 1, PlayerID
+        Play DBal 1 : Set DBal Loop 1, 1
+        CurrentANIM = 1
+       Endif
+     EndCase
+    Case 1
+      If BottomRIGHT = 0 Or BottomLeft = 0 Then YPos = YPos + 1
+      If CurrentANIM <> 3
+        If CurrentANIM > 0 Then Stop DBal CurrentANIM 
+        Set DBAl To Bob 3, PlayerID
+        Play DBal 3 : Set DBal Loop 3, 1
+        CurrentANIM = 3
+       Endif
+     EndCase
+   EndSelect
+  If XMove = 0 And YMove = 0
+    If CurrentANIM > 0 Then Stop DBal CurrentANIM
+    CurrentANIM = 0
+   Endif 
+  ` 7.4. Position the player at its new location.
+  Position Bob PlayerID, XPos, YPos
+  ` 7.5. Display all data on screen.
+  Update DBAL
+  Paste All Layers
+
+
+
+  Set Cursor 0, 0
+  Print "FPS : ", Screen FPS()
+  Sync
+loop
+End
+
+
+LAYER_INFORMATIONS:
+Data 20, 15
+Data 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+Data 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ,2, 2, 1
+Data 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ,2, 2, 1
+Data 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ,2, 2, 1
+Data 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ,2, 2, 1
+Data 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ,2, 2, 1
+Data 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ,2, 2, 1
+Data 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ,2, 2, 1
+Data 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ,2, 2, 1
+Data 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ,2, 2, 1
+Data 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ,2, 2, 1
+Data 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ,2, 2, 1
+Data 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ,2, 2, 1
+Data 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ,2, 2, 1
+Data 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1

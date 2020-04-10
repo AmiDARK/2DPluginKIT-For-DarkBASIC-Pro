@@ -1,0 +1,39 @@
+`
+` 2DPlugin KIT Ver 1.1 [2008.03.26]
+`===================================================================
+`Tiles Demonstration © Odyssey-Creators 2006-2008 [Frédéric Cordier]
+`===================================================================
+` 2D Tiles Demo
+`
+` This small sample will show you how to create tiles and use them everywhere on the screen.
+`-----------------------------------------------------------------------------------------------------
+Set Display Mode 640, 480, 32
+Sync On : Sync Rate 0
+` 1. We must initialize the plugin.
+Null = Start 2DPlugKIT( "fortkraozuwayzaporrazpwz", "GTXbLRHScabHhbDPPVYIfUacG", 1 )
+` 2. We must reserve the correct amount of tiles.
+Reserve Tiles 64, 32, 32
+
+` 3. We load the two tiles we need for the demonstration
+Load Tile "media\Asteroids_001.png", 1
+Load Tile "media\Asteroids_004.png", 2
+
+` 4. Finallize the tiles creation
+Prepare Tiles
+` 5. We'll display these tiles randomly on screen.
+AMOUNT = 1 ` Setup amount of random tiles displayed to 1 for default startup.
+Do
+  Cls
+  Begin Tiles Rendering
+  For TLoop = 1 To AMOUNT
+    Paste Tile 1, Rnd( 640 ) - 32, Rnd( 480 ) - 32
+   Next TLoop
+  End Tiles Rendering
+  Print "AMOUNT OF TILES : ", AMOUNT
+  Print "FRAME RATE : ", Screen FPS()
+  Print "PRESS +/- to increase/decrease the amount of tiles"
+  KEY$ = Inkey$()
+  AMOUNT = AMOUNT + ( KEY$ = "+" ) - ( KEY$ = "-" )
+  If AMOUNT < 1 Then AMOUNT = 1
+  Sync
+loop

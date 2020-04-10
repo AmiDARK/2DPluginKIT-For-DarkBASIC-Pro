@@ -1,0 +1,238 @@
+STRINGTABLE
+{
+1, 	"Start 2DPlugKIT[%LSS%Init2DPlugKIT%"
+2,    "Start 2DPlugKIT[%LSSL%Init2DPlugKITEx%Mode"
+3,    "SyncFPS%L%PKSyncFPS%FrameRate"
+4,    "ARgb[%LLLL%ARGB%Alpha, Red, Green, Blue"
+5,    "RgbA[%LL%RGBA%RGBAColor"
+6, 	"Get Default Tile Width[%L%P2DK_GetDefaultTileWidth%"
+7, 	"Get Default Tile Height[%L%P2DK_GetDefaultTileHeight%"
+8, 	"Get Default Tile Transparency[%L%P2DK_GetDefaultTileTransparency%"
+9, 	"Set Default Tile Width%L%P2DK_SetDefaultTileWidth%Width"
+10, 	"Set Default Tile Height%L%P2DK_SetDefaultTileHeight%Height"
+11, 	"Set Default Tile Transparency%L%P2DK_SetDefaultTileTransparency%TransparencyFLAG"
+12,   "Debug 2DPlugKIT%L%P2DK_SetDebugMODE%DebugModeFLAG"
+13,   "Get Tiled Sprite ID[%L%P2DK_GetTilesSprite%"
+14,   "Set Tile Sprite Mode%L%P2DK_SetSpriteRESIZEMode%Mode"
+}
+
+STRINGTABLE
+{
+16,   "Set Tiles Directory%S%P2DK_SetTilesLocation%DrawerPath$"
+17, 	"Create Tile%LL%P2DK_CreateTileEx%TileID, ImageID"
+18, 	"Create Tile%LLL%P2DK_CreateTile%TileID, ImageID, TransparencyFLAG"
+19,   "Load Tile%SL%P2DK_LoadTileEx%FileName$, TileID"
+20,   "Load Tile%SLLL%P2DK_LoadTile%FileName$, TileID, ImageID, TransparencyFLAG"
+21, 	"Set Tile Image%LLL%P2DK_ChangeTileImage%TileID, ImageID, TransparencyFLAG"
+22, 	"Set Tile Image%LL%P2DK_ChangeTileImageEx%TileID, ImageID"
+23, 	"Set Tile Mask%LL%P2DK_SetTileMask%TileID, MaskIMAGEID"
+24,   "Load Tile Mask%SL%P2DK_LoadTileMASK%FileName$, TileID"
+25,   "Set Tile NMap%LL%P2DK_SetTileNormalMAP%TileID, NormalMAPImageID"
+26,   "Load Tile NMap%SL%P2DK_LoadTileNMAP%FileName$, TileID"
+27, 	"Set Tile Transparency%LL%P2DK_SetTileTransparency%TileID, Transparency"
+28, 	"Disable Tile NMap%L%P2DK_DeleteTileNMap%TileID"
+29, 	"Disable Tile Mask%L%P2DK_DeleteTileMask%TileID"
+30, 	"Delete Tile%L%P2DK_DeleteTile%TileID"
+31, 	"Paste Tile%LLL%P2DK_PasteTile%TileID, X, Y"
+}
+
+STRINGTABLE
+{
+32, 	"Get Tile Exist[%LL%P2DK_GetTileExist%TileID"
+33, 	"Get Tile Width[%LL%P2DK_GetTileWidth%TileID"
+34, 	"Get Tile Height[%LL%P2DK_GetTileHeight%TileID"
+35, 	"Get Tile Transparency[%LL%P2DK_GetTileTransparency%TileID"
+36, 	"Get Tile Image[%LL%P2DK_GetTileImage%TileID"
+37, 	"Get Tile Memblock Image[%LL%P2DK_GetTileImageMBC%TileID"
+38,   "Get Tile Mask Exist[%LL%P2DK_GetTileMaskExist%TileID"
+39, 	"Get Tile Mask Memblock Image[%LL%P2DK_GetTileMaskMBC%TileID"
+40,   "Get Tile NMap Exist[%LL%P2DK_GetTileNMapExist%TileID"
+41, 	"Get Tile NMap Memblock Image[%LL%P2DK_GetTileNMapMBC%TileID"
+42,   "Save Tile To File%LL%P2DK_WriteTileToFile%FileChannel, TileID"
+43,   "Create Tile From File[%LL%P2DK_ReadTileFromFile%FileChannel"
+44,   "Save Tiles To File%L%P2DK_WriteTilesDefinitionToFile%FileChannel"
+45,   "Create Tiles From File[%LL%P2DK_ReadTilesDefinitionFromFile%FileChannel"
+46,   "Reserve Tiles%LLL%P2DK_ReserveTiles%TilesCOUNT, TilesWIDTH, TilesHEIGHT"
+47,   "Prepare Tiles%0%P2DK_PrepareTILES%"
+}
+
+STRINGTABLE
+{
+48, 	"Create Layer%LLL%P2DK_CreateMapLayer%LayerID, Width, Height"
+49, 	"Set Layer Tile%LLLL%P2DK_SetLayerTile%LayerID, XPosition, YPosition, TileID"
+50,   "Set Layer Area%LLLLL%P2DK_SetLayerArea%LayerID, Left, Top, Right, Bottom"
+51,   "Set Layer Position%LFF%P2DK_SetLayerPosition%LayerID, XShift, YShift"
+52,   "Set Layer Position X%LF%P2DK_SetLayerPositionX%LayerID, XShift"
+53,   "Set Layer Position Y%LF%P2DK_SetLayerPositionY%LayerID, YShift"
+54,   "Scroll Layer%LLL%P2DK_ScrollLayer%LayerID, XScroll, YScroll"
+55,   "Scroll Layer X%LL%P2DK_ScrollLayerX%LayerID, XScroll"
+56,   "Scroll Layer Y%LL%P2DK_ScrollLayerY%LayerID, YScroll"
+57,   "Paste Layer%LLLLL%P2DK_TraceLayer%LayerID, Left, Top, Right, Bottom"
+58,   "Paste Layer%L%P2DK_TraceLayerEx%LayerID"
+59, 	"Delete Layer%L%P2DK_DeleteMapLayer%LayerID"
+60,   "Set Layer UV Mode%LLL%P2DK_SetLayerUVMode%LayerID, U, V"
+61,   "Set Layer Tiles Sizes%LLL%P2DK_SetLayerTilesSizes%LayerID, TilesWIDTH, TilesHEIGHT"
+62,   "Copy Layer%LL%P2DK_CopyLayer%Destination, Source"
+63,   "Set Layer Visible%LL%P2DK_SetLayerVisible%LayerID, VisibilityFLAG"
+}
+
+STRINGTABLE
+{
+64,   "Set Layer Scroll Mode%LL%P2DK_SetLayerScrollMode%LayerID, ScrollMODE"
+65,   "Set Layer Scroll Speed XY%LFF%P2DK_SetLayerScrollXY%LayerID, XSpeed#, YSpeed#"
+66,   "Set Layer Scroll Speed X%LF%P2DK_SetLayerScrollX%LayerID, XSpeed#"
+67,   "Set Layer Scroll Speed Y%LF%P2DK_SetLayerScrollY%LayerID, YSpeed#"
+68,   "Set Layer Camera Mode%LL%P2DK_SetLayerCameraMODE%LayerID, CameraMODE"
+69,   "Set Game Layer%L%P2DK_SetGameLayer%LayerID"
+70, 	"Get Layer Exist[%LL%P2DK_GetLayerExist%LayerID"
+71,   "Get Layer Width[%LL%P2DK_GetLayerWidth%LayerID"
+72,   "Get Layer Height[%LL%P2DK_GetLayerHeight%LayerID"
+73,   "Get Layer Tile Width[%LL%P2DK_GetLayerTileWIDTH%LayerID"
+74,   "Get Layer Tile Height[%LL%P2DK_GetLayerTileHEIGHT%LayerID"
+75,   "Get Layer UVU Mode[%LL%P2DK_GetLayerXCycle%LayerID"
+76,   "Get Layer UVV Mode[%LL%P2DK_GetLayerYCycle%LayerID"
+77,   "Get Layer XScroll[%FL%P2DK_GetLayerXScroll%LayerID"
+78,   "Get Layer YScroll[%FL%P2DK_GetLayerYScroll%LayerID"
+79, 	"Get Layer Tile[%LLLL%P2DK_GetLayerTileID%LayerID, XPosition, YPosition"
+}
+
+STRINGTABLE
+{
+80,   "Get Layer Visible[%LL%P2DK_GetLayerVisible%LayerID"
+81,   "Get Layer Scroll Mode[%LL%P2DK_GetLayerScrollMODE%LayerID"
+82,   "Get Layer Scroll Speed X[%FL%P2DK_GetLayerXSpeed%LayerID"
+83,   "Get Layer Scroll Speed Y[%FL%P2DK_GetLayerYSpeed%LayerID"
+84,   "Get Layer Camera Mode[%LL%P2DK_GetLayerCameraMODE%LayerID"
+85,   "Get Game Layer[%L%P2DK_GetGameLayer%"
+86,   "Get Layer Area Left[%LL%P2DK_GetLayerAreaLEFT%LayerID"
+87,   "Get Layer Area Top[%LL%P2DK_GetLayerAreaTOP%LayerID"
+88,   "Get Layer Area Right[%LL%P2DK_GetLayerAreaRIGHT%LayerID"
+89,   "Get Layer Area Bottom[%LL%P2DK_GetLayerAreaBOTTOM%LayerID"
+90,   "Save Layer To File%LL%P2DK_WriteLAYERToFILE%FileNUMBER, LayerID"
+91,   "Create Layer From File[%LLL%P2DK_CreateLAYERFromFile%FileNUMBER, LayerID"
+92,   "Create Layer From File[%LL%P2DK_CreateLAYERFromFileEx%FileNumber"
+93,   "Save Layers To File%L%P2DK_WriteLayersToFile%FileNUMBER"
+94,   "Create Layers From File[%LL%P2DK_CreateLayersFromFile%FileNUMBER"
+95,   "Paste All Layers%0%P2DK_TraceAllLayers%"
+}
+
+STRINGTABLE
+{
+96,  "Set Game Layer Position%FF%P2DK_SetMainLayerPOSITION%XPos, YPos"
+97,  "Begin Tiles Rendering%0%P2DK_StartTILESRendering%"
+98,  "End Tiles Rendering%0%P2DK_StopTILESRendering%"
+}
+
+STRINGTABLE
+{
+112,  "Add V2DLight[%LLLLFLLL%P2DK_AddVirtualLight%X, Y, RGBColor, Range#, Intensite(%), LightMode, LayerID"
+113,  "Attach V2DLight To Layer%LL%P2DK_AttachLightToLayer%LightID, LayerID"
+114,  "Detach V2DLight From Layer%L%P2DK_DetachLightFromLayer%LightID"
+115,  "Show V2DLight%L%P2DK_ShowLIGHT%LightID"
+116,  "Hide V2DLight%L%P2DK_HideLIGHT%LightID"
+117,  "Position V2DLight%LLL%P2DK_PositionP2DKVLight%LightID, XPos, YPos"
+118,  "Set V2DLight Color%LLLL%P2DK_SetP2DKVLightColor%LightID, Red, Green, Blue"
+119,  "Set V2DLight Range%LL%P2DK_SetP2DKVLightRange%LightID, Range"
+120,  "Set V2DLight Intensity%LL%P2DK_SetP2DKVLightIntensity%LightID, Intensity"
+124,  "Get V2DLight Exist[%LL%P2DK_GetP2DKVLightExist%LightID"
+125,  "Get V2DLight Layer[%LL%P2DK_IsLightLayerAttached%LightID"
+126,  "Is V2DLight Hidden[%LL%P2DK_IsLightHIDDEN%LightID"
+127,  "Delete V2DLight[%LL%P2DK_DeleteP2DKVLight%LightID"
+}
+
+STRINGTABLE
+{
+128,  "Set V2DLight As Static%L%P2DK_SetLightSTATIC%LightID"
+129,  "Set V2DLight As Flame%L%P2DK_SetLightFLAME%LightID"
+130,  "Set V2DLight As Pulse%L%P2DK_SetLightPULSE%LightID"
+131,  "Set V2DLight As Flash%L%P2DK_SetLightFLASH%LightID"
+132,  "Update V2DLights Effects%0%P2DK_UpdateLightEffects%"
+133,  "Get V2DLight Color Red[%LL%P2DK_GetP2DKVLightRGBR%LightID"
+134,  "Get V2DLight Color Green[%LL%P2DK_GetP2DKVLightRGBG%LightID"
+135,  "Get V2DLight Color Blue[%LL%P2DK_GetP2DKVLightRGBB%LightID"
+136,  "Get V2DLight Position X[%LL%P2DK_GetP2DKVLightPositionX%LightID"
+137,  "Get V2DLight Position Y[%LL%P2DK_GetP2DKVLightPositionY%LightID"
+}
+
+STRINGTABLE
+{
+144,  "Get Layer Pixel[%LLLL%P2DK_GetARGBLayerPixel%LayerID, XPos, YPos"
+145,  "Get Layer MASKPixel[%LLLL%P2DK_GetLayerMaskPixel%LayerID, XPos, YPos"
+146,  "Get Layer NMAPPixel[%LLLL%P2DK_GetNMAPLayerPixel%LayerID, XPos, YPos"
+147,  "Make 8Bit Memblock Image[%LLLL%Make8BITSMemblockImage%MemblockNumber, Width, Height"
+148,  "Read 8Bit Pixel[%LLL%P2DK_Read8BitsPixel%MemblockID, X, Y"
+149,  "Write 8Bit Pixel[%LLLL%P2DK_Write8BitsPixel%MemblockID, X, Y, Color"
+}
+
+STRINGTABLE
+{
+160,  "Create DBal%LS%P2DK_CreateAnimation%AnimationID, FramesLIST$"
+161,  "Set DBal To Sprite%LL%P2DK_SetAnimationToSprite%AnimationID, SpriteID"
+162,  "Set DBal To Tile%LL%P2DK_SetAnimationToTile%AnimationID, TileID"
+163,  "Set DBal To Bob%LL%P2DK_SetAnimationToBob%AnimationID, BobID"
+164,  "Set DBal Speed%LL%P2DK_SetAnimationSpeed%AnimationID, Speed"
+165,  "Play DBal%L%P2DK_PlayANIMATION%AnimationID"
+166,  "Stop DBal%L%P2DK_StopANIMATION%AnimationID"
+167,  "Update DBal%0%P2DK_UpdateANIMATIONS%"
+168,  "Delete All Tiles%0%P2DK_ClearTiles%"
+169,  "Set DBAL Loop%LL%P2DK_LoopANIMATION%AnimationID, LoopFlag"
+170,  "Get DBal Playing[%LL%P2DK_GetAnimationPlaying%AnimationID"
+}
+
+STRINGTABLE
+{
+176,  "Add Bob[%LL%P2DK_AddBlitterObjectEx%ImageID"
+177,  "Add Bob[%LLLL%P2DK_AddBlitterObject%ImageID, FramesOnX, FramesOnY"
+178,  "Detach Bob From Layer%LL%P2DK_DetachBobFromLayer%BobID, LayerID"
+179,  "Attach Bob To Layer%LL%P2DK_AttachBobToLayer%BobID, LayerID"
+180,  "Position Bob%LLL%P2DK_PositionBOB%BobID, X, Y"
+181,  "Hide Bob%L%P2DK_HideBOB%BobID"
+182,  "Show Bob%L%P2DK_ShowBOB%BobID"
+183,  "Set Bob Image%LL%P2DK_SetBobImage%BobID, ImageID"
+184,  "Set Bob Frame%LL%P2DK_SetBobFrame%BobID, FrameID"
+185,  "Paste Bob%L%P2DK_PasteBOBEx%BobID"
+186,  "Paste Bob%LLL%P2DK_PasteBOB%BobID, X, Y"
+187,  "Paste Bob%LLLL%P2DK_PasteBOB1%BobID, X, Y, TransparencyFLAG"
+188,  "Load Bob[%LSLLL%P2DK_LoadBlitterObject%FileNAME$, FramesOnX, FramesOnY, TransparencyFLAG"
+189,  "Load Bob[%LSLL%P2DK_LoadBlitterObjectEx%FileNAME$, FramesOnX, FramesOnY"
+190,  "Load Bob[%LSL%P2DK_LoadBlitterObjectEx2%FileNAME$, TransparencyFLAG"
+191,  "Load Bob[%LS%P2DK_LoadBlitterObjectEx3%FileNAME$"
+}
+
+STRINGTABLE
+{
+192,  "Instance Bob[%LLLL%P2DK_InstanceBlitterObject%SourceBOB, X, Y"
+193,  "Instance Bob[%LL%P2DK_InstanceBlitterObjectEx%SourceBOB"
+194,  "Get Bob Position X[%LL%P2DK_GetBobPosX%BobID"
+195,  "Get Bob Position Y[%LL%P2DK_GetBobPosY%BobID"
+196,  "Get Bob Exist[%LL%P2DK_GetBobExist%BobID"
+197,  "Get Bob Frame[%LL%P2DK_GetBobFrame%BobID"
+198,  "Get Bob Transparent[%LL%P2DK_GetBobTransparent%BobID"
+}
+
+STRINGTABLE
+{
+208,  "Get Image Width[%LL%P2DK_GetImageWIDTH%ImageID"
+209,  "Get Image Height[%LL%P2DK_GetImageHEIGHT%ImageID"
+210,  "Get Image Depth[%LL%P2DK_GetImageDEPTH%ImageID"
+211,  "Get Image Ptr[%LL%P2DK_GetImagePtr%ImageID"
+212,  "Get Image Block Size[%LL%P2DK_GetImageBlockSIZE%ImageID"
+213,  "Get Image Pixel[%LLLL%P2DK_GetImagePixel%ImageID, XPos, YPos" 
+214,  "Set Image Pixel%LLLL%P2DK_SetImagePixel%ImageID, XPos, YPos, ARGBPixel"
+}
+
+STRINGTABLE
+{
+224,  "Add Particle2D[%LLLF%P2DK_AddParticles%ParticlesCount, ImageID, ParticleSize#"
+225,  "Position Particle2D%LLL%P2DK_PositionParticles%ParticleID, XPos, YPos"
+226,  "Set Particle2D Range%LLL%P2DK_SetEmitterRange%ParticleID, XRange, YRange"
+227,  "Set Particle2D Path%LFF%P2DK_SetParticlePath%ParticleID, XMove#, YMove#"
+228,  "Set Particle2D As Flames%L%P2DK_SetAsFlames%ParticleID"
+229,  "Set Particle2D As Smoke%L%P2DK_SetAsSmoke%ParticleID"
+230,  "Set Particle2D As Snow%L%P2DK_SetAsSnow%ParticleID"
+231,  "Set Particle2D As Rain%L%P2DK_SetAsRain%ParticleID"
+232,  "Set Particle2D As Sparkle%L%P2DK_SetAsSparkle%ParticleID"
+233,  "Update Particles2D%0%P2DK_UpdateParticles%"
+234,  "Attach Particle To Layer%LL%P2DK_AttachParticleToLayer%ParticleID, LayerID"
+235,  "Detach Particle From Layer%L%P2DK_DetachParticleFromLayer%ParticleID"
+}

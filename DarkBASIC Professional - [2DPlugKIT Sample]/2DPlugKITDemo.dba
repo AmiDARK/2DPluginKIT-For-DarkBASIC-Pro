@@ -1,0 +1,215 @@
+Flush Video Memory
+Set Display Mode 640, 480, 32
+Sync On : Sync Rate 0
+Set Bitmap Format 21
+` Define default tiles sizes to use with layers.
+Set Default Tile Width 32
+Set Default Tile Height 32
+Set Default Tile Transparency 1
+` Prepare Graphics
+PrepareGRAPHICS()
+PrepareTILES()
+` Create All Layers
+PrepareLAYER( 1 ) ` Layer 1 : Background moon and stars.
+Set Layer Properties 1, 1, 0
+PrepareLAYER( 2 ) ` Layer 2 : Clouds.
+Set Layer Properties 2, 1, 0
+PrepareLAYER( 3 ) ` Layer 3 : Mountains.
+Set Layer Properties 3, 1, 0
+PrepareLAYER( 4 ) ` Layer 4 : Trees.
+Set Layer Properties 4, 1, 0
+PrepareLAYER( 5 ) ` Layer 5 : Decorations.
+Set Layer Properties 5, 1, 0
+` Create layer lights
+PrepareV2DLights()
+
+Sync Mask 1
+Repeat 
+  Update DBal
+  ` Scroll the clouds
+  Inc Count, 1 : If Count = 8 : Scroll Layer 2, 1, 0 : Count = 0 : Endif
+  XMove = RightKey() - LeftKey()
+  If XMove <> 0
+    XSHIFT = XSHIFT + XMove
+    XScroll = XMove / Abs( XMove )
+    If XShift = 3 : Scroll Layer 3, XScroll, 0 : Endif
+    If XShift = 2 Or XShift = 4 : Scroll Layer 4, XScroll, 0 : Endif
+    If XShift < 0 : XShift = XShift + 6 : Endif
+    If Xshift > 5 : XShift = XShift - 6 : Endif
+    Scroll Layer 5, XMove, 0
+   Endif
+  Paste Layer 1, 0, 0, Bitmap Width() + 32, 352
+  Paste Layer 2, 0, 64, Bitmap Width() + 32, 192
+  Paste Layer 3, 0, 288, Bitmap Width() + 32, 416
+  Paste Layer 4, 0, 352, Bitmap Width() + 32, 448
+  Paste Layer 5, 0, 256 , Bitmap Width() + 32, 480
+  Set Cursor 0, 0 : Print Screen FPS()
+  FastSYNC
+ Until SpaceKey() = 1
+
+ End
+
+Function COMPILER_Includes()
+  Null = Memblock Exist(1)
+  Null = Bitmap Exist(1)
+  Null = Image Exist(1)
+  Null = Sprite Exist(1)
+  Null = PP Initialized()
+  Null = Start 2DPlugKIT()
+  Null = EXT Initialized()
+  Null = MBC Initialized()
+  Null = IMG Initialized()
+  Null = SPR Initialized()
+  Null = Rgb(1,1,1)
+ EndFunction
+
+Function PrepareLAYER( LayerID )
+  Select LayerID
+    Case 1 : Restore BACKGROUNDPART : EndCase
+    Case 2 : Restore CLOUDYPART : EndCase
+    Case 3 : Restore MOUNTAINSPART : EndCase
+    Case 4 : Restore TREESPART : EndCase
+    Case 5 : Restore DECORATIONPART : EndCase
+   EndSelect
+  READ LayerXSize : READ LayerYSize
+  Create Layer LayerID, LayerXSize, LayerYSize
+  For YLoop = 0 To LayerYSize - 1
+    For XLoop = 0 To LayerXSize - 1
+      READ LayerDATA
+      Set Layer Tile LayerID, XLoop, YLoop, LayerDATA
+     Next XLoop
+   Next YLoop
+ EndFunction
+
+Function PrepareV2DLights()
+  LightID = Add V2DLight( 48+32, 88+16, Rgb( 255, 255, 0 ), 96, 20, 3, 5 )
+  LightID = Add V2DLight( 208+32, 88+16, Rgb( 255, 255, 0 ), 96, 40, 3, 5 )
+  LightID = Add V2DLight( 368+32, 88+16, Rgb( 255, 255, 0 ), 96, 60, 3, 5 )
+  LightID = Add V2DLight( 528+32, 88+16, Rgb( 255, 255, 0 ), 96, 80, 3, 5 )
+ EndFunction
+
+Function PrepareGRAPHICS()
+  File$ = "Media/Demo01GFX.png"
+  If File Exist( File$ ) = 1
+`    Load Bitmap File$, 1
+`    IWidth = Bitmap Width( 1 ) : IHeight = Bitmap Height( 1 )
+    Load Image "Media/Demo01GFX.png", 1, 1
+    IWidth = Image Width( 1 ) : IHeight = Image Height( 1 )
+    Create Bitmap 1, IWidth, IHeight
+    Paste Image 1, 0, 0
+    Delete Image 1
+    CurrentTILE = 10
+    For Yloop = 0 to IHeight - 32 Step 32
+      For XLoop = 0 To IWidth - 32 Step 32
+        Inc CurrentTILE, 1
+        Get Image CurrentTILE, XLoop, YLoop, XLoop + 32, YLoop + 32, 1
+       Next XLoop
+     Next YLoop
+    Delete Bitmap 1
+   Endif
+ EndFunction
+
+Function PrepareTILES()
+  Create Tile 1, 11
+  Create DBal 1, "ANIM;11;12;13;14;15;16;17;18;51;52;53;54;55;56;57;58;"
+  Set DBal To Tile 1, 1
+  Set DBal Speed 1, 50
+  Play DBal 1
+  Create Tile 2, 19
+  Create DBal 2, "ANIM;19;20;21;22;23;24;25;26;59;60;61;62;63;64;65;66;"
+  Set DBal To Tile 2, 2
+  Set DBal Speed 2, 50
+  Play DBal 2
+  Create Tile 3, 27
+  Create DBal 3, "ANIM;27;28;29;30;31;32;33;34;67;68;69;70;71;72;73;74;"
+  Set DBal To Tile 3, 3
+  Set DBal Speed 3, 50
+  Play DBal 3
+  Restore TILELISTS
+  Repeat
+    Read TileID : Read TileIMAGEID
+    If TileID > MAXTILE Then MAXTILE = TileID
+    If TileID > 0 And TileIMAGEID > 0
+      Create Tile TileID, TileIMAGEID + 10
+     Endif
+   Until TileID = 0 And TileIMAGEID = 0
+  ` Ajout des 2 Normal mapping pour le porte flamme. Histoire que la lumière puisse l'affecter.
+  Set Tile NMap 55, 98+10
+  Set Tile NMap 63, 106+10
+  Set Tile NMap 54, 107+10
+  Set Tile NMap 4, 26+10
+  Set Tile NMap 5, 27+10
+  Set Tile NMAP 58, 101+10
+  Set Tile NMAP 59, 102+10
+  Set Tile NMAP 66, 109+10
+  Set Tile NMAP 67, 110+10
+  Set Tile NMap 74, 117+10
+  Set Tile NMap 75, 118+10
+  Set Tile NMap 82, 125+10
+  Set Tile NMap 83, 126+10   
+  Set Tile NMap 76, 113+10
+  Set Tile NMap 77, 114+10
+  Set Tile NMap 70, 116+10
+  Set Tile NMap 78, 124+10
+  Set Tile Mask 4, 129+10
+  Set Tile Mask 5, 130+10
+ EndFunction
+
+TILELISTS:
+Data 4, 25, 5, 33
+Data 6, 26, 7, 34
+Data 8, 27, 9, 28, 10, 35, 11, 36, 12, 29, 13, 30
+Data 14, 37, 15, 38
+Data 16, 31, 17, 32, 18, 39, 19, 40
+Data 20, 65, 21, 66, 22, 67, 23, 68, 24, 73, 25, 74, 26, 75, 27, 76
+Data 28, 69, 29, 70, 30, 71, 31, 72, 32, 77, 33, 78, 34, 79, 35, 80
+Data 36, 81, 37, 82, 38, 83, 39, 84, 40, 85, 41, 86, 42, 87, 43, 88
+Data 44, 89, 45, 90, 46, 91, 47, 92, 48, 93, 49, 94, 50, 95, 51, 96
+Data 52, 97, 53, 98, 54, 99, 55,100, 56,101, 57,102, 58,103, 59,104
+Data 60,105, 61,106, 62,107, 63,108, 64,109, 65,110, 66,111, 67,112
+Data 68,113, 69,114, 70,115, 71,116, 72,117, 73,118, 74,119, 75,120
+Data 76,121, 77,122, 78,123, 79,124, 80,125, 81,126, 82,127, 83,128
+Data 0, 0
+
+MOUNTAINSPART:
+Data 24, 4
+Data 36,37,38,39,40,41,42,43,36,37,38,39,40,41,42,43,36,37,38,39,40,41,42,43
+Data 44,45,46,47,48,49,50,51,44,45,46,47,48,49,50,51,44,45,46,47,48,49,50,51
+Data 52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52
+Data 60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60
+TREESPART:
+Data 20, 3
+Data 0,9,0,9,0,9,0,9,0,9,0,9,0,9,0,9,0,9,0,9
+Data 10,11,10,11,10,11,10,11,10,11,10,11,10,11,10,11,10,11,10,11
+Data 12,13,12,13,12,13,12,13,12,13,12,13,12,13,12,13,12,13,12,13
+
+DECORATIONPART:
+Data 20, 7
+Data 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,74,75
+Data 0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,82,83
+Data 0,0,2,0,0,0,0,2,0,0,0,0,2,0,0,0,0,2,58,59
+Data 0,55,3,55,0,0,55,3,55,0,0,55,3,55,0,0,55,3,66,67
+Data 70,63,4,63,70,0,63,4,63,70,0,63,4,63,70,0,63,4,58,59
+Data 78,54,5,54,78,76,54,5,54,78,76,54,5,54,78,76,54,5,66,67
+Data 14,15,14,15,14,15,14,15,14,15,14,15,14,15,14,15,14,15,14,15,
+
+CLOUDYPART:
+Data 20, 4
+Data 20,21,22,23,20,21,22,23,20,21,22,23,20,21,22,23,20,21,22,23
+Data 24,25,26,27,24,25,26,27,24,25,26,27,24,25,26,27,24,25,26,27
+Data 28,29,30,31,28,29,30,31,28,29,30,31,28,29,30,31,28,29,30,31
+Data 32,33,34,35,32,33,34,35,32,33,34,35,32,33,34,35,32,33,34,35
+
+BACKGROUNDPART:
+Data 20, 11
+Data 7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7
+Data 7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7
+Data 7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,16,17,7,7,7
+Data 7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,18,19,7,7,7
+Data 7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7
+Data 7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7
+Data 7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7
+Data 7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7
+Data 7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7
+Data 7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7
+Data 7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7

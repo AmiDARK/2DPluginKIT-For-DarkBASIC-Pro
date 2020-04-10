@@ -1,0 +1,112 @@
+`
+` 2DPlugin KIT Ver 1.1 [2008.03.26]
+`===================================================================
+`Tiles Demonstration © Odyssey-Creators 2006-2008 [Frédéric Cordier]
+`===================================================================
+` 2D Tiles Demo
+`
+` This game requires the eXtends plugin to use XFont and MUSIC.
+` You can remove lines 60 to 62 to remove eXtends music
+` You can remove line 59, lines from 88 to 107 and function SETUP_XFONT() to remove XFOnt and use the demo without eXtends.
+`-----------------------------------------------------------------------------------------------------
+Type Setup_Type
+  DefaultPATH As String
+ EndType
+Setup As Setup_Type
+Setup.DefaultPATH = Get Dir$()
+Global PlayerID As Integer
+Global PlayerSOUND As Integer
+Global ShotDELAY As Integer
+Global PlayerParticle As Integer
+Type Projectyle_Type
+  ID As Integer 
+  Active As Integer
+  XSpeed As Integer
+ EndType
+Dim Projectyle( 4 ) As Projectyle_Type
+Global ProjectyleSOUND As Integer
+Dim Enemies( 128 ) As Projectyle_Type
+Global EnemySOUND As Integer
+Global GlobalSCORE As Integer
+Dim Explosion( 8 )
+Set Display Mode 640, 480, 32, 0
+Sync On : sync Rate 60
+Backdrop On : Color Backdrop 0
+Null = Start 2DPlugKIT( "jzoaiwzahgrbazlzeysz", "KeUIJWgEKMWIJbOZFcZhPeSDJ", 1 )
+
+Reserve Tiles 512, 32, 32
+ RESULT = LoadMap( Setup.DefaultPATH + "\Maps\TestLEVEL.2dm" )
+Prepare Tiles
+If RESULT = 0
+  Message "2DGC Error Message", "Cannot load map file"
+  End
+ Endif
+Set Layer Scroll Mode 1, 1
+Set Layer Scroll Speed XY 1, 0.05, 0
+Set Layer Scroll Mode 2, 1
+Set Layer Scroll Speed XY 2, 0.25, 0
+Set Game Layer 3
+Set Layer Scroll Mode 4, 1
+Set Layer Scroll Speed XY 4, 1.50, 0
+
+SETUP_Particles()
+SETUP_BlitterOBJECTS()
+SETUP_VLights()
+SETUP_Player()
+SETUP_Projectyles()
+SETUP_Enemies()
+SETUP_XFONT()
+SETUP_Explosions()
+InGAMEMusic = MSC Load Music( "Musics/28-JustLikeAnOldAmigaGame.mp3" )
+Play Music InGAMEMusic
+Loop Music InGAMEMusic
+OldTimer = PerfTimer() / 10000000
+Repeat
+  OldXPos# = XPos# : XPos# = XPos# + 1.0 
+  If Int( OldXPos# ) <> Int( XPos# ) : MOVING = 1 : Else : MOVING = 0 : Endif
+  If GAMEOVER = 0 : GlobalSCORE = GlobalSCORE + MOVING : Endif
+  Set Game Layer Position XPos#, 0
+  Paste All Layers
+  Select Inkey$()
+    Case "u" : Sync Rate 0 : EndCase
+    Case "l" : Sync Rate 60 : EndCase
+   EndSelect
+  Update DBal
+  Update V2DLights Effects
+  Update Particles2D
+  If GAMEOVER = 0 
+    GAMEOVER = UPDATE_Player( MOVING )
+    If SpaceKey() = 1 Then ShootProjectyle()
+   Else
+    Position Particle2D PlayerParticle, -50, -50
+    Inc GAMEOVER, 1
+   Endif
+  UPDATE_Enemies()
+  UPDATE_Projectyles()
+
+  XFont Set Cursor 0, 0
+  VASCORE$ = Str$( GlobalSCORE )
+  Select Len( VASCORE$ )
+    Case 1 : VASCORE$ = "0000000" + VASCORE$ : EndCase
+    Case 2 : VASCORE$ = "000000" + VASCORE$ : EndCase
+    Case 3 : VASCORE$ = "00000" + VASCORE$ : EndCase
+    Case 4 : VASCORE$ = "0000" + VASCORE$ : EndCase
+    Case 5 : VASCORE$ = "000" + VASCORE$ : EndCase  
+   EndSelect
+  XFont Set Cursor 240, 0 : Xfont Print "SCORE"
+  XFont Set Cursor 192, 32 : XFont Print VASCORE$
+  XFont Set Cursor 0, 448 : XFont Print "FPS : " + Str$( Screen FPS() )
+  If GAMEOVER > 0
+    XFONT Set Cursor 192, 240 : XFont Print "GAMEOVER"
+   Else
+    If Get Layer XScroll( 3 ) > 7000 Then XFONT Set Cursor 80, 192 : XFont Print "CONGRATULATIONS"
+    If Get Layer XScroll( 3 ) > 7032 Then XFONT Set Cursor 144, 224 : XFont Print "YOU REACHED"
+    If Get Layer XScroll( 3 ) > 7064 Then XFONT Set Cursor 160, 256 : XFont Print "THE END OF"
+    If Get Layer XScroll( 3 ) > 7096 Then XFONT Set Cursor 80, 288 : XFont Print "2DPLUG KIT DEMO"
+   Endif
+
+  Sync
+ Until EscapeKEY() = 1 Or GAMEOVER > 600 Or Get Layer XScroll( 3 ) > 9000
+End
+
+

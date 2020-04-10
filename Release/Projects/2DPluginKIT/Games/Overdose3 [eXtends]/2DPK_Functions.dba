@@ -1,0 +1,258 @@
+Function SETUP_Particles()
+  SmokeParticle1 = Add Particle2D( 24, 0, 40 )
+  Set Particle2D Range SmokeParticle1, 48, 160
+  Position Particle2D SmokeParticle1, 6140, 448 - 124
+  Set Particle2D As Smoke SmokeParticle1
+  Attach Particle To Layer SmokeParticle1, 3
+  SmokeParticle2 = Add Particle2D( 24, 0, 40 )
+  Set Particle2D Range SmokeParticle2, 48, 160
+  Position Particle2D SmokeParticle2, 6300, 448 - 156
+  Set Particle2D As Smoke SmokeParticle2
+  Attach Particle To Layer SmokeParticle2, 3
+  SmokeParticle3 = Add Particle2D( 24, 0, 40 )
+  Set Particle2D Range SmokeParticle3, 48, 160
+  Position Particle2D SmokeParticle3, 6460, 448 - 156
+  Set Particle2D As Smoke SmokeParticle3
+  Attach Particle To Layer SmokeParticle3, 3
+ EndFunction
+
+Function SETUP_BlitterOBJECTS()
+  BobID = Load Bob( "Bobs/Anim01.png", 1, 8, 1 )
+  Position Bob BobID, 4640, 0
+  Attach Bob To Layer BobID, 3
+  Create DBal 1, "ANIM;01;02;03;04;05;06;07;08;"
+  Set DBal To Bob 1, BobID
+  Set DBAL Speed 1, 3.0
+  Play DBAL 1
+ EndFunction
+
+Function SETUP_VLights()
+  LightID1 = Add V2DLight( 4106, 80, Rgb( 255, 128, 0 ), 48, 80, 0, 3 )
+  Set V2DLight As Static LightID1
+  LightID2 = Add V2DLight( 4106, 144, Rgb( 255, 128, 0 ), 48, 80, 0, 3 )
+  Set V2DLight As Pulse LightID2
+  LightID3 = Add V2DLight( 6216, 400, Rgb( 255, 128, 0 ), 48, 80, 0, 3 )
+  Set V2DLight As Flame LightID3
+  LightID4 = Add V2DLight( 6282, 400, Rgb( 255, 128, 0 ), 48, 80, 0, 3 )
+  Set V2DLight As Static LightID4
+  LightID5 = Add V2DLight( 6346, 400, Rgb( 255, 128, 0 ), 48, 80, 0, 3 )
+  Set V2DLight As Pulse LightID5
+  LightID6 = Add V2DLight( 6442, 400, Rgb( 255, 128, 0 ), 48, 80, 0, 3 )
+  Set V2DLight As Flame LightID6
+  LightID7 = Add V2DLight( 6538, 400, Rgb( 255, 128, 0 ), 48, 80, 0, 3 )
+  Set V2DLight As Static LightID7
+  LightID8 = Add V2DLight( 6442, 304, Rgb( 255, 128, 0 ), 48, 80, 0, 3 )
+  Set V2DLight As Pulse LightID8
+  LightID9 = Add V2DLight( 6442, 208, Rgb( 255, 128, 0 ), 48, 80, 0, 3 )
+  Set V2DLight As Flash LightID9
+  LightID10 = Add V2DLight( 6410, 336, Rgb( 255, 128, 0 ), 48, 80, 0, 3 )
+  Set V2DLight As Static LightID10
+  LightID11 = Add V2DLight( 6346, 304, Rgb( 255, 128, 0 ), 48, 80, 0, 3 )
+  Set V2DLight As Flash LightID11
+ EndFunction
+ 
+Function SETUP_Player()
+  PlayerID = Load Bob( "Bobs/Player.png", 1, 1, 1 )
+  Position Bob PlayerID, 64, 224
+  Attach Bob To Layer PlayerID, 3
+  PlayerSOUND = SND Load Sound( "Sounds/White zap.wav" )
+  PlayerParticle = Add Particle2D( 24, 0, 32 )
+  Set Particle2D Range PlayerParticle, 40, 160
+  Position Particle2D PlayerParticle, 6140, 448 - 124
+  Set Particle2D As Flames PlayerParticle
+  Attach Particle To Layer PlayerParticle, 3
+`  Set Particle2D As Custom PlayerParticle
+  Set Particle2D Path PlayerParticle, -0.05, 0.0
+ EndFunction
+
+Function SETUP_Explosions()
+  For ELoop = 1 to 8
+    Explosion( ELoop ) = Load Bob( "Bobs/Explosion.png", 4, 4, 1 )
+    Attach Bob To Layer Explosion( ELoop ), 3
+    Position Bob Explosion( Eloop ), -512, -512
+    Create DBal ELoop + 1, "ANIM;01;02;03;04;05;06;07;08;09;10;11;12;13;14;15;16;"
+    Set DBal To Bob  ELoop + 1, Explosion( ELoop )
+    Set DBAL Speed  ELoop + 1, 16
+   Next ELoop
+ EndFunction
+
+Function MAKE_Explosion( XPos, YPos )
+  ELoop = 0
+  Repeat
+    ELoop = ELoop + 1
+   Until Get DBAL Playing( ELoop + 1 ) = 0 Or ELoop = 8
+  If Get DBAL Playing( ELoop + 1 ) = 0 
+    Position Bob Explosion( ELoop ), XPos, YPos
+    Play DBal Eloop + 1
+    Set DBal Loop ELoop + 1, 0
+   Endif
+ EndFunction
+
+ Function UPDATE_Player( SHIFT )
+  XPos = Get Bob Position X( PlayerID )
+  YPos = Get Bob Position Y( PlayerID )
+  XPos = Xpos + ( ( RightKey() - LeftKey() ) *2 ) + SHIFT
+  YPos = YPos + ( ( DownKey() - UpKey() ) * 2 )
+  If YPos < 0 : YPos = 0 : Endif
+  If YPos > 448 : YPos = 448 : Endif
+  XMin = Get Layer XScroll( 3 )
+  If XPos < XMin + 1: XPos = XMin + 1 : Endif
+  If XPos > XMin + 480 : XPos = XMin + 480 : Endif
+  Position Bob PlayerID, XPos, YPos
+  Position Particle2D PlayerParticle, XPos-24, YPos-64
+  NewPIXEL1 = Get Layer MASKPixel( 3, XPos, YPos )
+  NewPIXEL1 = NewPIXEL1 Or Get Layer MASKPixel( 3, XPos +3, YPos+13 )
+  NewPIXEL1 = NewPIXEL1 Or Get Layer MASKPixel( 3, XPos +3, YPos+21 )
+  NewPIXEL1 = NewPIXEL1 Or Get Layer MASKPixel( 3, XPos +8, YPos+26 )
+  NewPIXEL1 = NewPIXEL1 Or Get Layer MASKPixel( 3, XPos +16, YPos+27 )
+  NewPIXEL1 = NewPIXEL1 Or Get Layer MASKPixel( 3, XPos +31, YPos+27 )
+  NewPIXEL1 = NewPIXEL1 Or Get Layer MASKPixel( 3, XPos +41, YPos+30 )
+  NewPIXEL1 = NewPIXEL1 Or Get Layer MASKPixel( 3, XPos +56, YPos+25 )
+  NewPIXEL1 = NewPIXEL1 Or Get Layer MASKPixel( 3, XPos +63, YPos +19 )
+  NewPIXEL1 = NewPIXEL1 Or Get Layer MASKPixel( 3, XPos +53, YPos +14 )
+  NewPIXEL1 = NewPIXEL1 Or Get Layer MASKPixel( 3, XPos +45, YPos +12 )
+  NewPIXEL1 = NewPIXEL1 Or Get Layer MASKPixel( 3, XPos +35, YPos +9 )
+  NewPIXEL1 = NewPIXEL1 Or Get Layer MASKPixel( 3, XPos +33, YPos +6 )
+  NewPIXEL1 = NewPIXEL1 Or Get Layer MASKPixel( 3, XPos +18, YPos +5 )
+  NewPIXEL1 = NewPIXEL1 Or Get Layer MASKPixel( 3, XPos +7, YPos +2 )
+  GAMEOVER = ( NewPIXEL1 <> 0 )
+  If GAMEOVER = 0
+    For XLoop = 1 to 128
+      If Enemies( XLoop ).Active = 1
+        XM = Get Bob Position X( Enemies( XLoop ).ID )
+        YM = Get Bob Position Y( Enemies( XLoop ).ID )
+        If XPos > XM - 52 And XPos < XM + 28
+          If YPos > YM - 21 And YPos < YM + 21
+            MAKE_Explosion( XM, YM )
+            GAMEOVER = 1
+           Endif
+         Endif
+       Endif
+     Next XLoop
+   Endif
+  If GAMEOVER <> 0
+    MAKE_Explosion( XPos, YPos )
+    MAKE_Explosion( XPos+16, YPos )
+    Position Bob PlayerID, -1024, -500
+    Play Sound EnemySOUND
+   Endif
+ EndFunction GAMEOVER
+
+Function SETUP_Projectyles()
+  Projectyle( 1 ).ID = Load Bob( "Bobs/Projectyle1-3.png", 1, 1, 1 )
+  Position Bob Projectyle( 1 ).ID, -128, -128
+  Attach Bob To Layer Projectyle( 1 ).ID, 3
+  Projectyle( 2 ).ID = Instance Bob( Projectyle( 1 ).ID, -128, -128 )
+  Attach Bob To Layer Projectyle( 2 ).ID, 3
+  Projectyle( 3 ).ID = Instance Bob( Projectyle( 1 ).ID, -128, -128 )
+  Attach Bob To Layer Projectyle( 3 ).ID, 3
+  Projectyle( 4 ).ID = Instance Bob( Projectyle( 1 ).ID, -128, -128 )
+  Attach Bob To Layer Projectyle( 4 ).ID, 3
+  ProjectyleSOUND = SND Load Sound( "Sounds/Hit tube.wav" )
+ EndFunction
+
+Function ShootProjectyle()
+  If ShotDELAY < 1
+    PJID = 0
+    Repeat
+      PJID = PJID + 1
+     Until PJID = 4 Or Projectyle( PJID ).Active = 0
+    If Projectyle( PJID ).Active = 0
+      Play Sound PlayerSOUND
+      ShotDELAY = 10
+      Projectyle( PJID ).Active = 1
+      Position Bob Projectyle( PJID ).ID, Get Bob Position X( PlayerID ) + 56, Get Bob Position Y( PlayerID ) + 20
+     Endif
+   Endif
+ EndFunction
+
+Function UPDATE_Projectyles()
+  If ShotDELAY > 0 : ShotDELAY = ShotDELAY - 1 : Endif
+  For PLoop = 1 To 4
+    If Projectyle( PLoop ).Active = 1
+      Position Bob Projectyle( PLoop ).ID, Get Bob Position X( Projectyle( PLoop ).ID ) + 8, Get Bob Position Y( Projectyle( PLoop ).ID )
+      If Get Bob Position X( Projectyle( PLoop ).ID ) > Get Layer XScroll( 3 ) + 640
+        Position Bob Projectyle( PLoop ).ID, -128, -128
+        Projectyle( PLoop ).Active = 0
+       Else
+        NewPIXEL1 = Get Layer MASKPixel( 3, Get Bob Position X( Projectyle( PLoop ).ID ) + 14, Get Bob Position Y( Projectyle( PLoop ).ID ) )
+        NewPIXEL2 = Get Layer MASKPixel( 3, Get Bob Position X( Projectyle( PLoop ).ID ) + 14, Get Bob Position Y( Projectyle( PLoop ).ID ) + 3 )
+        If NewPIXEL1 <> 0 Or NewPIXEL2 <> 0
+          Position Bob Projectyle( PLoop ).ID, -128, -128
+          Projectyle( PLoop ).Active = 0
+          Play Sound ProjectyleSOUND
+         Else
+          XP = Get Bob Position X( Projectyle( PLoop ).ID )
+          YP = Get Bob Position Y( Projectyle( PLoop ).ID )
+          For ENLOP = 1 to 128
+            If Enemies( ENLOP ).Active = 1
+              XM = Get Bob Position X( Enemies( ENLOP ).ID )
+              YM = Get Bob Position Y( Enemies( ENLOP ).ID )
+              If XP > XM - 16 And XP < XM + 32
+                If YP > YM - 4 And YP < YM + 32
+                  MAKE_Explosion( XM, YM )
+                  Enemies( ENLOP ).Active = 0
+                  Position Bob Enemies( ENLOP ).ID, 0, 0
+                  GlobalSCORE = GlobalSCORE + 25
+                  Position Bob Projectyle( PLoop ).ID, -128, -128
+                  Projectyle( PLoop ).Active = 0
+                  Play Sound EnemySOUND
+                  ENLOP = 63
+                 Endif
+               Endif
+             Endif
+           Next ENLOP
+         Endif
+       Endif
+     Endif
+   Next PLoop
+ EndFunction
+
+Function SETUP_Enemies()
+  Enemies( 1 ).ID = Load Bob( "Bobs/Mine.png", 1, 1, 1 )
+  Position Bob Enemies( 1 ).Id, Rnd( 400 ) + 2920, Rnd( 384 ) + 32
+  Attach Bob To Layer Enemies( 1 ).ID, 3
+  Enemies( 1 ).Active = 1
+  For XLoop = 2 To 15
+    Enemies( XLoop ).ID = Instance Bob( Enemies( 1 ).ID, Rnd( 400 ) + 2920, Rnd( 416 ) + 32 )
+    Attach Bob To Layer Enemies( XLoop ).ID, 3
+    Enemies( XLoop ).Active = 1
+   Next XLoop
+  For XLoop = 65 To 128
+    Enemies( XLoop ).ID = Instance Bob( Enemies( 1 ).ID )
+    Position Bob Enemies( XLoop ).ID, Rnd( 1220 ) + 6200, Rnd( 352 ) + 32 
+    Attach Bob To Layer Enemies( XLoop ).ID, 3
+    Enemies( XLoop ).Active = 1
+   Next XLoop
+  Enemies( 16 ).ID = Load Bob( "Bobs/Asteroids.png", 1, 1, 1 )
+  Position Bob Enemies( 16 ).ID, Rnd( 1500 ) + 500, Rnd( 448 )  
+  Attach Bob To Layer Enemies( 16 ).ID, 3
+  Enemies( 16 ).Active = 1
+  Enemies( 16 ).XSPEED = Rnd( 3 )
+  For XLoop = 17 to 64
+    Enemies( XLoop ).ID = Instance Bob( Enemies( 16 ).ID, Rnd( 1500 ) + 500, Rnd( 448 ) )
+    Attach Bob To Layer Enemies( XLoop ).ID, 3
+    Enemies( XLoop ).Active = 1
+    Enemies( XLoop ).XSPEED = Rnd( 3 )
+   Next XLoop
+  EnemySOUND = SND Load Sound( "Sounds/Boom 1.wav" )
+ EndFunction
+
+Function UPDATE_Enemies()
+  For XLoop = 1 To 128
+    If Enemies( XLoop ).Active = 1
+      If XLoop > 15 And XLoop < 65
+        XPOS = Get Bob Position X( Enemies( XLoop ).ID ) - Enemies( XLoop ).XSPEED
+        Position Bob Enemies( XLoop ).ID, XPOS, Get Bob Position Y( Enemies( XLoop ).ID )
+       Endif
+     Else
+      Position Bob Enemies( XLoop ).ID, -1024, -1024
+     Endif
+   Next XLoop
+ EndFunction
+
+Function SETUP_XFONT()
+  XFont Setup Font "Font32x32.png" , 1 , 32 , 32 , 32
+  XFont Auto Return Mode 0
+  XGui Set Text Transparent
+ EndFunction

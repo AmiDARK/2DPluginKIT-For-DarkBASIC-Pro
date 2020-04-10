@@ -1,0 +1,50 @@
+`%ProjectTitle%
+`======================
+`©%Author%
+`======================
+`Main Source File
+Set Display Mode 640, 480, 32
+ Sync On : Sync Rate 0
+NULL = PP Initialized()
+Null = Start 2DPlugKIT()
+`
+StartBlue "FDP" , "5A3D1C"
+
+
+Repeat
+  Fichier$ = OpenDialog( "", "*.*|*.*", 0, Get Dir$())
+  If File Exist( Fichier$ ) = 1 And Len( Fichier$ ) > 5
+    Load Image Fichier$, 1   
+    Make Memblock From Image 1, 1
+    MakeAlpha( 1, 50, 0 ) 
+    Make Image From Memblock 1, 1
+    Save Image Left$( Fichier$, Len( Fichier$ ) - 4 ) + "_Alpha" + ".png", 1, -1
+    Delete Memblock 1
+    Delete Image 1
+   Endif
+ Until File Exist( Fichier$ ) = 0 Or Len( Fichier$ ) < 6
+End
+
+Function MakeAlpha( MemblockID, Percent#, Mode )
+  For XLoop = 12 To Get Memblock Size( 1 ) - 4 Step 4
+    RGBColor = Memblock DWord( 1, XLoop )
+    RED = RGBR( RGBColor ) : GREEN = RGBG( RGBColor ) : BLUE = RGBB( RGBColor )
+    Select Mode
+      Case 0
+        ALFA = ( RED + GREEN + BLUE ) / 3.0
+`       ALFA = ALFA * ( Percent# / 100.0 )
+       EndCase
+      Case 1
+        Other = ( RED + GREEN ) / 2
+        BlueP = Blue - Other
+        ALFA = 255 - ( BlueP * 2 ) 
+       EndCase
+     EndSelect
+    If ALFA > 255 Then ALFA = 255
+    If ALFA < 0 Then ALFA = 0
+`    NewRGBColor = RGBColor + ( ALFA * 16777216 )
+    NewRGBColor = ARgb( Alfa, RED, GREEN, BLUE )
+    Write Memblock DWord 1, XLoop, NewRGBColor
+   Next XLoop
+ EndFunction
+

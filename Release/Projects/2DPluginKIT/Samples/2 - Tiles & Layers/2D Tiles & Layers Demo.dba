@@ -1,0 +1,63 @@
+`
+` 2DPlugin KIT Ver 1.1 [2008.03.26]
+`===================================================================
+`Tiles Demonstration © Odyssey-Creators 2006-2008 [Frédéric Cordier]
+`===================================================================
+` 2D Tiles Demo
+`
+` This small sample will show you how to create tiles and use them in a layer.
+`-----------------------------------------------------------------------------------------------------
+Set Display Mode 640, 480, 32
+Sync On : Sync Rate 0
+` 1. We must initialize the plugin.
+Null = Start 2DPlugKIT( "fortkraozuwayzaporrazpwz", "GTXbLRHScabHhbDPPVYIfUacG", 1 )
+` 2. We must reserve the correct amount of tiles.
+Reserve Tiles 64, 32, 32
+
+` 3. We load the two tiles we need for the demonstration
+Load Tile "media\Overdose3_001.png", 1
+Load Tile "media\Overdose3_033.png", 2
+
+` 4. Finallize the tiles creation
+Prepare Tiles
+
+` 5. We create the layer.
+Restore LAYER_INFORMATIONS
+Read LayerWIDTH : Read LayerHEIGHT
+Create Layer 1, LayerWIDTH, LayerHEIGHT
+Set Layer Tiles Sizes 1, 32, 32 
+For YLoop = 0 to LayerHEIGHT -1
+  For XLoop = 0 to LayerWIDTH - 1
+    Read LayerTILE
+    Set Layer Tile 1, XLoop, YLoop, LayerTILE
+   Next XLoop
+ Next YLoop
+
+` 6. We'll display the layer on screen
+AMOUNT = 1 ` Setup amount of random tiles displayed to 1 for default startup.
+Do
+  Paste All Layers
+  Set Cursor 0, 0
+  Print "FPS : ", Screen FPS()
+  Sync
+loop
+End
+
+
+LAYER_INFORMATIONS:
+Data 20, 15
+Data 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+Data 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ,2, 2, 1
+Data 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ,2, 2, 1
+Data 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ,2, 2, 1
+Data 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ,2, 2, 1
+Data 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ,2, 2, 1
+Data 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ,2, 2, 1
+Data 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ,2, 2, 1
+Data 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ,2, 2, 1
+Data 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ,2, 2, 1
+Data 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ,2, 2, 1
+Data 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ,2, 2, 1
+Data 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ,2, 2, 1
+Data 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ,2, 2, 1
+Data 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1

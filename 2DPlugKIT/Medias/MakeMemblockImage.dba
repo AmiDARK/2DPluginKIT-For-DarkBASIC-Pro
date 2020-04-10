@@ -1,0 +1,32 @@
+`
+`
+`
+Sync On : Sync Rate 60
+StartBlue "FDP" , "5A3D1C"
+
+
+  
+
+Repeat
+  Fichier$ = OpenDialog( "Open a PNG file to create a RAW file", "*.*|*.*", 0, Get Dir$())
+  If File Exist( Fichier$ ) = 1 And Len( Fichier$ ) > 5
+    MakeRawImage( Fichier$ )
+   Endif
+ Until File Exist( Fichier$ ) = 0 Or Len( Fichier$ ) < 6
+End
+
+
+
+
+
+Function MakeRawImage( Fichier$ )
+  Load Image Fichier$, 1, 1
+  Make Memblock From Image  1, 1
+  NewFile$ = Left$( Fichier$, Len( Fichier$ ) - 4 ) + ".raw"
+  IF File Exist( NewFILE$ ) = 1 Then Delete file NewFILE$
+  Open To Write 1, NewFILE$
+    Make File From Memblock 1, 1
+   Close File 1
+  Delete Memblock 1
+  Delete Image 1
+ EndFunction
